@@ -95,7 +95,7 @@ Maintaining an accurate and auditable electoral roll is a difficult data-integri
 
 ## 6. System Architecture
 
-`https://drive.google.com/file/d/137zehp3U5R3zMEnsW0whbY_oJJ3kAege/view?usp=drive_link`
+https://drive.google.com/file/d/137zehp3U5R3zMEnsW0whbY_oJJ3kAege/view?usp=drive_link
 
 Operational data stays in PostgreSQL. The blockchain/audit layer stores only hashes and event metadata.
 
