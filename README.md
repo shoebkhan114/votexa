@@ -54,7 +54,7 @@ VOTEXA is built on one idea:
 > **Right voter + right polling area + one-time voting authorization + verified electoral records + tamper-evident audit trail.**
 
 - **Registry and workflows:** electoral registry, address-change workflow, deceased/ineligible workflow and complaint handling, each with officer review. Nothing is deleted or changed automatically.
-- **Decision support:** duplicate detection (name, date of birth and address similarity) that only *suggests* matches; an officer confirms or rejects.
+- **Decision support:** duplicate detection (name, date of birth and address similarity) that only _suggests_ matches; an officer confirms or rejects.
 - **Polling validation:** eligibility checks, polling-station match and one-time authorization (`NOT_VOTED` to `VOTED`; a second attempt returns `ALREADY_VOTED`).
 - **Tamper-evident audit:** every sensitive action is hashed (SHA-256) and linked to the previous event, forming a verifiable chain. A Hyperledger Fabric chaincode and an optional Fabric ledger client are included for anchoring audit hashes.
 - **Offline validator:** a JavaFX application that validates voters from a signed, encrypted election snapshot without internet.
@@ -79,84 +79,52 @@ Maintaining an accurate and auditable electoral roll is a difficult data-integri
 
 ## 5. Key Features
 
-| Area | Features |
-|---|---|
-| Electoral registry | Voter CRUD, status management, roll versioning and freeze |
-| Address migration | Mock Aadhaar event, request, BLO verification, ERO approval, new polling station |
-| Deceased/ineligible | Mock death event, match, verification, authorized review (no auto-delete) |
-| Duplicate detection | Similarity score (for example "Potential Duplicate: 87%"), officer confirm/reject |
-| Polling validation | Eligibility checks, station match, one-time authorization |
-| Audit trail | SHA-256 hash chain, previous-hash linking, `VERIFIED` / `INTEGRITY VIOLATION` |
-| Blockchain | Fabric chaincode for audit records (optional ledger client, local ledger by default) |
-| Offline validator | JavaFX + SQLite, signature-verified package, encrypted fields, sync export |
-| Anomaly detection | Reconciliation errors, multiple-attempt alerts, review-required alerts |
-| Dashboards | Admin statistics, Chart.js charts, reports |
-| Security | JWT, RBAC, BCrypt, rate limiting, input validation, audit logging |
+| Area                | Features                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------ |
+| Electoral registry  | Voter CRUD, status management, roll versioning and freeze                            |
+| Address migration   | Mock Aadhaar event, request, BLO verification, ERO approval, new polling station     |
+| Deceased/ineligible | Mock death event, match, verification, authorized review (no auto-delete)            |
+| Duplicate detection | Similarity score (for example "Potential Duplicate: 87%"), officer confirm/reject    |
+| Polling validation  | Eligibility checks, station match, one-time authorization                            |
+| Audit trail         | SHA-256 hash chain, previous-hash linking, `VERIFIED` / `INTEGRITY VIOLATION`        |
+| Blockchain          | Fabric chaincode for audit records (optional ledger client, local ledger by default) |
+| Offline validator   | JavaFX + SQLite, signature-verified package, encrypted fields, sync export           |
+| Anomaly detection   | Reconciliation errors, multiple-attempt alerts, review-required alerts               |
+| Dashboards          | Admin statistics, Chart.js charts, reports                                           |
+| Security            | JWT, RBAC, BCrypt, rate limiting, input validation, audit logging                    |
 
 ## 6. System Architecture
 
-```text
-                    CITIZEN / OFFICERS
-                           |
-                           v
-                 +---------------------+
-                 |  React Web Portal   |
-                 +----------+----------+
-                            |  REST + JWT
-                            v
-                 +---------------------+
-                 |  Spring Boot API    |-----> Auth / RBAC / Rate limit
-                 +----------+----------+
-                            |
-          +-----------------+------------------+
-          v                                    v
-     PostgreSQL                       Audit Event Layer
- (operational data)            SHA-256 hash + previous hash
-                                         |
-                                         v
-                              Ledger Client (local ledger /
-                              Hyperledger Fabric chaincode)
-
-   POLLING STATION
-          |
-          v
- +--------------------+      signed + encrypted
- | JavaFX Offline     | <---- election snapshot
- | Validator (SQLite) |
- +---------+----------+
-           |  encrypted local audit
-           v
-     Secure sync export
-```
+`https://drive.google.com/file/d/137zehp3U5R3zMEnsW0whbY_oJJ3kAege/view?usp=drive_link`
 
 Operational data stays in PostgreSQL. The blockchain/audit layer stores only hashes and event metadata.
 
 ## 7. Technology Stack
 
-| Layer | Technology |
-|---|---|
-| Backend | Java 21, Spring Boot, Spring Security, Spring Data JPA, Maven |
-| Frontend | React, Vite, Tailwind CSS, Chart.js |
-| Database | PostgreSQL, Flyway migrations |
-| Offline validator | Java, JavaFX, SQLite |
-| Blockchain | Hyperledger Fabric (Java chaincode) |
-| Cryptography | SHA-256, AES, ECDSA digital signatures |
-| Auth | JWT, BCrypt, role-based access control |
-| Testing | JUnit, Mockito, Postman |
-| DevOps | Git, GitHub, Docker, Docker Compose |
+| Layer             | Technology                                                    |
+| ----------------- | ------------------------------------------------------------- |
+| Backend           | Java 21, Spring Boot, Spring Security, Spring Data JPA, Maven |
+| Frontend          | React, Vite, Tailwind CSS, Chart.js                           |
+| Database          | PostgreSQL, Flyway migrations                                 |
+| Offline validator | Java, JavaFX, SQLite                                          |
+| Blockchain        | Hyperledger Fabric (Java chaincode)                           |
+| Cryptography      | SHA-256, AES, ECDSA digital signatures                        |
+| Auth              | JWT, BCrypt, role-based access control                        |
+| Testing           | JUnit, Mockito, Postman                                       |
+| DevOps            | Git, GitHub, Docker, Docker Compose                           |
 
 ## 8. Modules and Roles
 
 **Roles (least privilege)**
 
-| Role | Permissions |
-|---|---|
-| Citizen | View own data, submit requests and complaints, track requests |
-| BLO | Verify records, recommend changes |
+| Role                   | Permissions                                                   |
+| ---------------------- | ------------------------------------------------------------- |
+| Citizen                | View own data, submit requests and complaints, track requests |
+| BLO                    | Verify records, recommend changes                             |
 | ERO / Election Officer | Approve or reject changes, review duplicates, update statuses |
-| Polling Officer | Validate voters, handle polling session |
-| Auditor | View audit history, verify chain, generate reports |
-| Super Admin | System configuration only |
+| Polling Officer        | Validate voters, handle polling session                       |
+| Auditor                | View audit history, verify chain, generate reports            |
+| Super Admin            | System configuration only                                     |
 
 **Backend packages** (`votexa-backend/src/main/java/com/votexa/`)
 
@@ -247,14 +215,14 @@ See [`votexa-blockchain/README.md`](votexa-blockchain/README.md). The backend us
 
 Demo users are created by the seed data (`V2__seed_demo_data.sql`). List them here after confirming:
 
-| Role | Username | Password |
-|---|---|---|
-| Super Admin | `admin` | `Votexa@123` |
-| ERO (Election Officer) | `ero102` | `Votexa@123` |
-| BLO | `blo101` | `Votexa@123` |
-| Polling Officer | `po102` | `Votexa@123` |
-| Auditor | `auditor1` | `Votexa@123` |
-| Citizen | `citizen1`, `citizen2` | `Votexa@123` |
+| Role                   | Username               | Password     |
+| ---------------------- | ---------------------- | ------------ |
+| Super Admin            | `admin`                | `Votexa@123` |
+| ERO (Election Officer) | `ero102`               | `Votexa@123` |
+| BLO                    | `blo101`               | `Votexa@123` |
+| Polling Officer        | `po102`                | `Votexa@123` |
+| Auditor                | `auditor1`             | `Votexa@123` |
+| Citizen                | `citizen1`, `citizen2` | `Votexa@123` |
 
 These are demo-only credentials. Never use real data or reuse real passwords.
 These are demo-only credentials. Never use real data or reuse real passwords.
@@ -312,23 +280,23 @@ See [`docs/KNOWN_LIMITATIONS.md`](docs/KNOWN_LIMITATIONS.md).
 
 **Team size:** 5 | **Team Leader:** `[FILL]`
 
-| # | Name | Roll No. | GitHub | Role / Module |
-|---|---|---|---|---|
-| M1 | `Shoeb Khan` (Team Leader) | `24EARAD151` | `https://github.com/shoebkhan114` | Auth, JWT, RBAC, voter registry, project setup |
-| M2 | `Rohit Singh Goad` | `24EARAD141` | `https://github.com/RohitSinghGoad` | Address change, complaints, death verification, mock services |
-| M3 | `Udit Singh Shekhawat` | `24EARAD168` | `https://github.com/udit42` | Duplicate detection, anomaly detection, offline validator |
-| M4 | `Tanu Kumar` | `24EARAD162` | `https://github.com/Tanu-ux28` | Election, polling station validation, one-time authorization |
-| M5 | `Suresh Singh` | `24EARAD160` | `https://github.com/Suresh209000` | Audit hash chain, blockchain, dashboard, reports |
+| #   | Name                       | Roll No.     | GitHub                              | Role / Module                                                 |
+| --- | -------------------------- | ------------ | ----------------------------------- | ------------------------------------------------------------- |
+| M1  | `Shoeb Khan` (Team Leader) | `24EARAD151` | `https://github.com/shoebkhan114`   | Auth, JWT, RBAC, voter registry, project setup                |
+| M2  | `Rohit Singh Goad`         | `24EARAD141` | `https://github.com/RohitSinghGoad` | Address change, complaints, death verification, mock services |
+| M3  | `Udit Singh Shekhawat`     | `24EARAD168` | `https://github.com/udit42`         | Duplicate detection, anomaly detection, offline validator     |
+| M4  | `Tanu Kumar`               | `24EARAD162` | `https://github.com/Tanu-ux28`      | Election, polling station validation, one-time authorization  |
+| M5  | `Suresh Singh`             | `24EARAD160` | `https://github.com/Suresh209000`   | Audit hash chain, blockchain, dashboard, reports              |
 
 ## 17. Project Guide
 
-| | |
-|---|---|
-| **Mentor** | Er. Ram Babu Buri |
-| **Department** | Computer Science and Engineering |
-| **Institution** | `Arya College of Engineering & I.T.` |
-| **Course** | Java Project Based Learning (PBL), 5th Semester |
-| **Academic Year** | 2026-27 |
+|                   |                                                 |
+| ----------------- | ----------------------------------------------- |
+| **Mentor**        | Er. Ram Babu Buri                               |
+| **Department**    | Computer Science and Engineering                |
+| **Institution**   | `Arya College of Engineering & I.T.`            |
+| **Course**        | Java Project Based Learning (PBL), 5th Semester |
+| **Academic Year** | 2026-27                                         |
 
 ## 18. Git Workflow for Contributors
 
