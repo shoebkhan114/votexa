@@ -1,0 +1,5 @@
+{ "recommendations": [
+  "vscjava.vscode-java-pack", "vmware.vscode-boot-dev-pack", "gabrielbb.vscode-lombok",
+  "dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "bradlc.vscode-tailwindcss",
+  "ms-azuretools.vscode-docker", "eamodio.gitlens", "mtxr.sqltools", "mtxr.sqltools-driver-pg"
+] }

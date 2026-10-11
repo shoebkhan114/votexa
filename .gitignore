@@ -1,0 +1,40 @@
+# secrets / runtime state (never commit)
+.env
+*.b64
+keys/
+ledger/
+# build output
+target/
+node_modules/
+dist/
+build/
+.gradle/
+*.class
+*.jar
+*.vxpkg
+# fabric downloads
+votexa-blockchain/fabric-samples/
+votexa-blockchain/install-fabric.sh
+# IDE / OS
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+*.db
+*.sqlite
+*.log
+*.pem
+*.key
+*.p12
+*.jks
+.env.*
+!.env.example
+*.db
+*.sqlite
+*.log
+*.pem
+*.key
+*.p12
+*.jks
+.env.*
+!.env.example

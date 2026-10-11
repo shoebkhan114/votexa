@@ -1,0 +1,52 @@
+# Optional: run the whole prototype in containers.
+#   cp .env.example .env   (edit it)   then   docker compose up --build
+# Web UI: http://localhost:8081   API: http://localhost:8080   Swagger: http://localhost:8080/swagger-ui.html
+# The database is created and seeded by Flyway on first start (V1 schema + V2 dummy data).
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: shoeb114
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: votexadb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"          # 5433 so it does not clash with a local PostgreSQL on 5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shoeb114 -d votexadb"]
+      interval: 5s
+      retries: 10
+
+  backend:
+    build: ./votexa-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/votexadb
+      DB_USER: shoeb114
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      CORS_ORIGINS: http://localhost:8081
+      LEDGER_MODE: local
+    volumes:
+      - backend-keys:/app/keys
+      - backend-ledger:/app/ledger
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./votexa-frontend
+      args:
+        VITE_API_URL: http://localhost:8080
+    depends_on:
+      - backend
+    ports:
+      - "8081:80"
+
+volumes:
+  pgdata:
+  backend-keys:
+  backend-ledger:

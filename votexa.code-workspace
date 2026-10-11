@@ -1,0 +1,10 @@
+{
+  "folders": [
+    { "name": "backend (Spring Boot, Java 21)", "path": "votexa-backend" },
+    { "name": "frontend (React)", "path": "votexa-frontend" },
+    { "name": "offline (JavaFX + SQLite)", "path": "votexa-offline" },
+    { "name": "blockchain (Fabric)", "path": "votexa-blockchain" },
+    { "name": "docs", "path": "docs" }
+  ],
+  "settings": { "java.configuration.updateBuildConfiguration": "automatic" }
+}
