@@ -315,10 +315,10 @@ See [`docs/KNOWN_LIMITATIONS.md`](docs/KNOWN_LIMITATIONS.md).
 | # | Name | Roll No. | GitHub | Role / Module |
 |---|---|---|---|---|
 | M1 | `Shoeb Khan` (Team Leader) | `24EARAD151` | `https://github.com/shoebkhan114` | Auth, JWT, RBAC, voter registry, project setup |
-| M2 | `Rohit Singh Goad` | `24EARAD141` | `[FILL]` | Address change, complaints, death verification, mock services |
-| M3 | `Udit Singh Shekhawat` | `24EARAD168` | `[FILL]` | Duplicate detection, anomaly detection, offline validator |
-| M4 | `Tanu Kumar` | `24EARAD162` | `[FILL]` | Election, polling station validation, one-time authorization |
-| M5 | `Suresh Singh` | `24EARAD160` | `[FILL]` | Audit hash chain, blockchain, dashboard, reports |
+| M2 | `Rohit Singh Goad` | `24EARAD141` | `https://github.com/RohitSinghGoad` | Address change, complaints, death verification, mock services |
+| M3 | `Udit Singh Shekhawat` | `24EARAD168` | `https://github.com/udit42` | Duplicate detection, anomaly detection, offline validator |
+| M4 | `Tanu Kumar` | `24EARAD162` | `https://github.com/Tanu-ux28` | Election, polling station validation, one-time authorization |
+| M5 | `Suresh Singh` | `24EARAD160` | `https://github.com/Suresh209000` | Audit hash chain, blockchain, dashboard, reports |
 
 ## 17. Project Guide
 
