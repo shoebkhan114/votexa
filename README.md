@@ -7,7 +7,12 @@ Java Project Based Learning (PBL) | 5th Semester, CSE / AI&DS / IT | Academic Ye
 > **PROTOTYPE / DEMO DATA ONLY.** VOTEXA is an academic prototype. It uses dummy voter data and mock government services. It is **not** a replacement for the Election Commission of India, EVMs or any official election infrastructure, and it does not claim to eliminate election fraud.
 
 ---
+## VOTEXA Offline Application
 
+- **Linux:** [Download for Linux](https://drive.google.com/file/d/1AbhwA61D2mrqPK_w9YcYCbAMzP3I1TID/view?usp=drive_link)
+- **Windows:** [Download for Windows](https://drive.google.com/file/d/1LAvSEWP6jQ_aVIecQtDD5oj9wFKyKHhe/view?usp=drive_link)
+
+See the Releases page for available versions.
 ## Table of Contents
 
 1. [Problem Statement](#1-problem-statement)
@@ -328,7 +333,8 @@ Rules:
 - [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md)
 - [`docs/KNOWN_LIMITATIONS.md`](docs/KNOWN_LIMITATIONS.md)
 - [`SRS`](https://drive.google.com/file/d/1CiGCn29RNf89t3LNrwveDU91btLdos4a/view?usp=drive_link)
-
+- [`Research_Paper`](https://docs.google.com/document/d/11ljEhY_6qNRCNuJ5pshsJ-SmkoA0ly92/edit?usp=drive_link&ouid=102686431428325278595&rtpof=true&sd=true)
+- [`PPT`](https://docs.google.com/presentation/d/1-AwoDM49NAXC_vAd00BsRhSfqGH9wpya/edit?usp=drive_link&ouid=102686431428325278595&rtpof=true&sd=true)
 ## 20. Disclaimer
 
 VOTEXA is a college project built for learning and demonstration. All data is fictional. Government services are simulated. The system is not intended for use in real elections.
