@@ -1,5 +1,6 @@
 package com.votexa.common;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,24 +29,41 @@ public class CryptoService {
 
     private final KeyPair keyPair;
 
-    public CryptoService(@Value("${votexa.keys-dir}") String dir) throws Exception {
-        Path d = Path.of(dir);
-        Files.createDirectories(d);
-        Path priv = d.resolve("authority-private.b64");
-        Path pub = d.resolve("authority-public.b64");
+    /** Keys come from environment variables when set (hosted mode), otherwise from files in the keys folder. */
+    @Autowired
+    public CryptoService(@Value("${votexa.keys-dir}") String dir,
+                         @Value("${votexa.keys.private-b64:}") String privB64,
+                         @Value("${votexa.keys.public-b64:}") String pubB64) throws Exception {
         KeyFactory kf = KeyFactory.getInstance("EC");
-        if (Files.exists(priv) && Files.exists(pub)) {
-            PrivateKey sk = kf.generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(Files.readString(priv).trim())));
-            PublicKey pk = kf.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(Files.readString(pub).trim())));
-            keyPair = new KeyPair(pk, sk);
+        KeyPair kp;
+        if (!privB64.isBlank() && !pubB64.isBlank()) {
+            PrivateKey sk = kf.generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privB64.trim())));
+            PublicKey pk = kf.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(pubB64.trim())));
+            kp = new KeyPair(pk, sk);
         } else {
-            KeyPairGenerator g = KeyPairGenerator.getInstance("EC");
-            g.initialize(256);
-            keyPair = g.generateKeyPair();
-            Files.writeString(priv, Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded()));
-            Files.writeString(pub, Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()));
-            try { priv.toFile().setReadable(false, false); priv.toFile().setReadable(true, true); } catch (Exception ignored) { }
+            Path d = Path.of(dir);
+            Files.createDirectories(d);
+            Path priv = d.resolve("authority-private.b64");
+            Path pub = d.resolve("authority-public.b64");
+            if (Files.exists(priv) && Files.exists(pub)) {
+                PrivateKey sk = kf.generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(Files.readString(priv).trim())));
+                PublicKey pk = kf.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(Files.readString(pub).trim())));
+                kp = new KeyPair(pk, sk);
+            } else {
+                KeyPairGenerator g = KeyPairGenerator.getInstance("EC");
+                g.initialize(256);
+                kp = g.generateKeyPair();
+                Files.writeString(priv, Base64.getEncoder().encodeToString(kp.getPrivate().getEncoded()));
+                Files.writeString(pub, Base64.getEncoder().encodeToString(kp.getPublic().getEncoded()));
+                try { priv.toFile().setReadable(false, false); priv.toFile().setReadable(true, true); } catch (Exception ignored) { }
+            }
         }
+        this.keyPair = kp;
+    }
+
+    /** Keeps the old one-argument form (used by tests): file-based keys only. */
+    public CryptoService(String dir) throws Exception {
+        this(dir, "", "");
     }
 
     public String publicKeyBase64() { return Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()); }
