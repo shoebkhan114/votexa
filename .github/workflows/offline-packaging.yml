@@ -1,0 +1,76 @@
+name: VOTEXA Offline Packaging
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    defaults:
+      run:
+        working-directory: votexa-offline
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          cache-dependency-path: votexa-offline/pom.xml
+
+      - name: Build and test
+        run: mvn --batch-mode clean verify
+
+      - name: Prepare package input
+        shell: bash
+        run: |
+          mkdir -p package-input
+          cp target/votexa-offline.jar package-input/
+
+      - name: Create application image
+        run: >
+          jpackage
+          --type app-image
+          --name VOTEXA-Offline
+          --input package-input
+          --main-jar votexa-offline.jar
+          --main-class com.votexa.offline.Launcher
+          --dest dist
+
+      - name: Archive Linux package
+        if: runner.os == 'Linux'
+        run: tar -czf VOTEXA-Offline-Linux.tar.gz -C dist VOTEXA-Offline
+
+      - name: Archive Windows package
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path dist/VOTEXA-Offline -DestinationPath VOTEXA-Offline-Windows.zip
+
+      - name: Upload Linux artifact
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: VOTEXA-Offline-Linux
+          path: votexa-offline/VOTEXA-Offline-Linux.tar.gz
+          if-no-files-found: error
+
+      - name: Upload Windows artifact
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: VOTEXA-Offline-Windows
+          path: votexa-offline/VOTEXA-Offline-Windows.zip
+          if-no-files-found: error
