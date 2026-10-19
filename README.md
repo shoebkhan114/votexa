@@ -342,6 +342,8 @@ Rules:
 - [`Research_Paper`](https://docs.google.com/document/d/11ljEhY_6qNRCNuJ5pshsJ-SmkoA0ly92/edit?usp=drive_link&ouid=102686431428325278595&rtpof=true&sd=true)
 - [`PPT`](https://docs.google.com/presentation/d/1-AwoDM49NAXC_vAd00BsRhSfqGH9wpya/edit?usp=drive_link&ouid=102686431428325278595&rtpof=true&sd=true)
 - [`VOTEXA_Report`](https://drive.google.com/file/d/13JG-t78LwxI8XRQBEMvti8Es6o66HGfT/view?usp=drive_link)
+- [`VOTEXA_Explanation_Video`](https://drive.google.com/file/d/1X8IIREkkDOXybiFLuGwgJvfEi86fJv-M/view?usp=drive_link)
+- [`VOTEXA_UML`](https://drive.google.com/file/d/1i1AL9pSPuQH7FQ74CjIoFtE4n7dLs7MJ/view?usp=drive_link)
 
 ## 20. Disclaimer
 
